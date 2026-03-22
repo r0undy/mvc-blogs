@@ -1,0 +1,101 @@
+﻿@model mvc_blogs.Models.Post
+
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="py-12 flex flex-col lg:flex-row gap-12 max-w-7xl mx-auto">
+    <!-- Main Article -->
+    <article class="lg:w-3/4 blog-content">
+        <div class="mb-10 text-center header-anim">
+            <a asp-controller="Blog" asp-action="Index" class="inline-flex items-center text-sm font-medium text-zinc-400 hover:text-white transition-colors mb-8 group">
+                <svg class="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to posts
+            </a>
+            
+            <div class="flex justify-center items-center gap-2 mb-4">
+                <span class="px-3 py-1 text-xs font-semibold tracking-wider uppercase bg-zinc-800 rounded-full text-zinc-300">
+                    @Model.Theme
+                </span>
+                <span class="text-zinc-500">&bull;</span>
+                <span class="text-sm font-medium text-zinc-400">@Model.PublishDate.ToString("MMMM dd, yyyy")</span>
+            </div>
+
+            <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6 leading-tight text-balance">
+                @Model.Title
+            </h1>
+            
+            <p class="text-lg md:text-xl text-zinc-400 italic max-w-2xl mx-auto">
+                @Model.Excerpt
+            </p>
+
+            <div class="mt-8 flex items-center justify-center gap-3">
+                @if (!string.IsNullOrEmpty(Model.AuthorImage))
+                {
+                    <img src="@Model.AuthorImage" class="w-10 h-10 rounded-full object-cover shadow-lg border border-white/10" alt="Author" />
+                }
+                else
+                {
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-zinc-700 to-zinc-800 flex items-center justify-center text-sm font-bold text-zinc-300 shadow-lg border border-white/10">
+                        @(Model.Author.FirstOrDefault())
+                    </div>
+                }
+                <div class="text-left">
+                    <div class="text-sm font-semibold text-zinc-200">@Model.Author</div>
+                    <div class="text-xs text-zinc-500">Author</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-full header-anim mb-10">
+            @if (!string.IsNullOrEmpty(Model.HeroImage))
+            {
+                <img src="@Model.HeroImage" class="w-full h-64 md:h-[500px] object-cover rounded-3xl" alt="@Model.Title" />
+            }
+            else
+            {
+                <div class="w-full h-64 md:h-[500px] bg-zinc-800 flex items-center justify-center text-zinc-500 font-medium rounded-3xl">
+                    [Hero Image Placeholder (approx 1200x500)]
+                </div>
+            }
+        </div>
+
+        <div class="prose prose-lg prose-invert max-w-none text-zinc-300 body-anim leading-relaxed">
+            @Html.Raw(Model.Content.Replace("\n", "<br/>"))
+        </div>
+    </article>
+
+    <!-- Sidebar -->
+    <aside class="lg:w-1/4 space-y-10 sidebar-anim mt-12 lg:mt-0">
+        <div class="glass-card rounded-2xl p-6 sticky top-28">
+
+            <h3 class="text-lg font-semibold mb-4 text-white">About the Author</h3>
+            <p class="text-sm text-zinc-400 leading-relaxed mb-4">
+                @Model.Author frequently writes about @Model.Theme and other fascinating subjects at Arkived.
+            </p>
+        </div>
+    </aside>
+</div>
+
+@section Scripts {
+    <script type="module">
+        import { animate, spring, stagger } from "https://cdn.jsdelivr.net/npm/motion@11.11.13/+esm";
+
+        animate(".header-anim", 
+            { opacity: [0, 1], y: [20, 0] },
+            { duration: 0.8, delay: stagger(0.15), easing: spring({ stiffness: 100, damping: 20 }) }
+        );
+
+        animate(".body-anim", 
+            { opacity: [0, 1], y: [20, 0] },
+            { duration: 0.8, delay: 0.5, easing: spring({ stiffness: 80, damping: 20 }) }
+        );
+
+        animate(".sidebar-anim", 
+            { opacity: [0, 1], x: [20, 0] },
+            { duration: 0.8, delay: 0.6, easing: spring({ stiffness: 80, damping: 20 }) }
+        );
+    </script>
+}

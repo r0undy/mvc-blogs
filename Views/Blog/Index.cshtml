@@ -1,0 +1,169 @@
+﻿@model IEnumerable<mvc_blogs.Models.Post>
+
+@{
+    ViewData["Title"] = "Latest Writings";
+    var featuredPost = Model.FirstOrDefault(p => p.IsFeatured) ?? Model.FirstOrDefault();
+    var otherPosts = Model.Where(p => p.Id != featuredPost?.Id);
+    var groupedPosts = otherPosts.GroupBy(p => p.Theme).ToList();
+    var categories = Model.Select(p => p.Theme).Distinct().OrderBy(t => t).ToList();
+}
+
+<div class="py-12 flex flex-col lg:flex-row gap-12 max-w-7xl mx-auto">
+    
+    <!-- Main Content Area -->
+    <div class="lg:w-3/4">
+        
+        <div class="mb-12 hero-text">
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-4">Latest Writings</h1>
+            <p class="text-zinc-400 text-lg max-w-2xl">Thoughts, reviews, and deep dives across various interests.</p>
+        </div>
+
+        @if (featuredPost != null)
+        {
+            <a asp-controller="Blog" asp-action="Details" asp-route-id="@featuredPost.Id" class="block group mb-16 hero-text">
+                <div class="relative w-full h-72 md:h-96 rounded-3xl overflow-hidden glass-card mb-6">
+                    @if (!string.IsNullOrEmpty(featuredPost.HeroImage))
+                    {
+                        <img src="@featuredPost.HeroImage" alt="@featuredPost.Title" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                    }
+                    else
+                    {
+                        <div class="w-full h-full bg-zinc-800 flex items-center justify-center text-zinc-500 font-medium transition-transform duration-700 group-hover:scale-105">
+                            [Hero Image Placeholder: wwwroot/images/heroes/...]
+                        </div>
+                    }
+                    <div class="absolute top-4 left-4 bg-zinc-900/80 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold tracking-wider text-white border border-white/10 uppercase">
+                        Featured
+                    </div>
+                </div>
+                <div class="max-w-3xl">
+                    <div class="flex items-center gap-3 mb-3">
+                        <span class="text-xs font-semibold tracking-wider uppercase text-zinc-400">@featuredPost.Theme</span>
+                        <span class="text-zinc-600">&bull;</span>
+                        <span class="text-xs text-zinc-500">@featuredPost.PublishDate.ToString("MMM dd, yyyy")</span>
+                    </div>
+                    <h2 class="text-3xl font-bold mb-3 group-hover:text-zinc-300 transition-colors">@featuredPost.Title</h2>
+                    <p class="text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors">@featuredPost.Excerpt</p>
+                </div>
+            </a>
+        }
+
+        @foreach (var group in groupedPosts)
+        {
+            <div class="mb-16 theme-section scroll-mt-28" id="@group.Key.ToLower().Replace(" ", "-")-section">
+                <div class="flex items-center gap-4 mb-6">
+                    <h2 class="text-2xl font-semibold tracking-tight">@group.Key</h2>
+                    <div class="h-px bg-zinc-800 flex-1"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    @foreach (var post in group)
+                    {
+                        <a asp-controller="Blog" asp-action="Details" asp-route-id="@post.Id" 
+                           class="group blog-card flex flex-col glass-card rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+                            
+                            <div class="h-40 w-full bg-zinc-800 relative overflow-hidden">
+                                @if (!string.IsNullOrEmpty(post.ThumbnailImage))
+                                {
+                                    <img src="@post.ThumbnailImage" alt="@post.Title" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                                }
+                                else
+                                {
+                                    <div class="w-full h-full flex items-center justify-center text-zinc-600 text-xs text-center p-4 transition-transform duration-500 group-hover:scale-110">
+                                        [Img Placeholder]
+                                    </div>
+                                }
+                                <div class="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                            </div>
+
+                            <article class="p-6 flex flex-col flex-grow gap-3">
+                                <div>
+                                    <span class="text-xs font-medium text-zinc-500 tracking-wider uppercase mb-2 block">@post.PublishDate.ToString("MMM dd, yyyy")</span>
+                                    <h3 class="text-lg font-semibold leading-snug group-hover:text-zinc-300 transition-colors">@post.Title</h3>
+                                </div>
+                                <p class="text-sm text-zinc-400 line-clamp-2 leading-relaxed flex-grow">
+                                    @post.Excerpt
+                                </p>
+                                <div class="mt-auto pt-4 border-t border-zinc-800 flex items-center gap-3">
+                                    @if (!string.IsNullOrEmpty(post.AuthorImage))
+                                    {
+                                        <img src="@post.AuthorImage" class="w-6 h-6 rounded-full object-cover" alt="" />
+                                    }
+                                    else
+                                    {
+                                        <div class="w-6 h-6 rounded-full bg-zinc-700 flex items-center justify-center text-[10px] font-bold text-zinc-300">
+                                            @(post.Author.FirstOrDefault())
+                                        </div>
+                                    }
+                                    <span class="text-xs font-medium text-zinc-400">@post.Author</span>
+                                </div>
+                            </article>
+                        </a>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="lg:w-1/4 space-y-10 sidebar-anim">
+        <div class="glass-card rounded-2xl p-6">
+            <h3 class="text-lg font-semibold mb-4 text-white">About Arkived</h3>
+            <p class="text-sm text-zinc-400 leading-relaxed">
+                This is your archive. Explore aesthetics, storytelling, or whatever your current fascination is. Make it yours.
+            </p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6">
+            <h3 class="text-lg font-semibold mb-4 text-white">Categories</h3>
+            <ul class="space-y-3">
+                @foreach (var theme in categories)
+                {
+                    <li>
+                        <a href="#@theme.ToLower().Replace(" ", "-")-section" class="category-link text-sm text-zinc-400 hover:text-white transition-colors flex justify-between items-center group">
+                            <span>@theme</span>
+                            <span class="bg-zinc-800 text-zinc-500 group-hover:bg-zinc-700 group-hover:text-zinc-300 px-2 py-0.5 rounded-full text-xs transition-colors">
+                                @Model.Count(p => p.Theme == theme)
+                            </span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </aside>
+
+</div>
+
+@section Scripts {
+    <script type="module">
+        import { animate, spring, stagger, inView } from "https://cdn.jsdelivr.net/npm/motion@11.11.13/+esm";
+
+        // Hero & Sidebar animation
+        animate(".hero-text", { opacity: [0, 1], y: [20, 0] }, { duration: 0.8, delay: stagger(0.1), easing: spring({ stiffness: 100, damping: 20 }) });
+        animate(".sidebar-anim", { opacity: [0, 1], x: [20, 0] }, { duration: 0.8, delay: 0.3, easing: spring({ stiffness: 100, damping: 20 }) });
+
+        // Staggered sections
+        inView(".theme-section", (element) => {
+            animate(element, { opacity: [0, 1], y: [20, 0] }, { duration: 0.6, easing: spring({ stiffness: 100, damping: 20 }) });
+        });
+
+        const cards = document.querySelectorAll(".blog-card");
+        cards.forEach(card => {
+            card.addEventListener("mouseenter", () => animate(card, { scale: 1.02 }, { duration: 0.3, easing: "ease-out" }));
+            card.addEventListener("mouseleave", () => animate(card, { scale: 1 }, { duration: 0.3, easing: "ease-out" }));
+        });
+
+        document.querySelectorAll(".category-link").forEach((link) => {
+            link.addEventListener("click", (event) => {
+                const targetId = link.getAttribute("href")?.slice(1);
+                if (!targetId) return;
+
+                const target = document.getElementById(targetId);
+                if (!target) return;
+
+                event.preventDefault();
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+            });
+        });
+    </script>
+}

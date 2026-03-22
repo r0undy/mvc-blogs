@@ -2,7 +2,31 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="min-h-[70vh] flex flex-col items-center justify-center text-center px-4">
+    <div class="mb-8 home-anim">
+        <h1 class="text-5xl md:text-7xl font-bold tracking-tight mb-6">Welcome to <span class="bg-clip-text text-transparent bg-gradient-to-r from-zinc-400 to-white">Arkived.</span></h1>
+        <p class="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+            Archiving your moments.
+        </p>
+    </div>
+    
+    <div class="home-anim">
+        <a asp-controller="Blog" asp-action="Index" class="inline-flex items-center justify-center px-8 py-4 text-base font-medium bg-white text-black rounded-full hover:scale-105 hover:bg-zinc-200 transition-all duration-300">
+            Start Reading
+            <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+        </a>
+    </div>
 </div>
+
+@section Scripts {
+    <script type="module">
+        import { animate, spring, stagger } from "https://cdn.jsdelivr.net/npm/motion@11.11.13/+esm";
+
+        // Ensuring elements are hidden initially via style attribute, then animated in. 
+        // This prevents the class list from permanently hiding them if motion fails to load somehow.
+        animate(".home-anim", 
+            { opacity: [0, 1], y: [20, 0] },
+            { duration: 0.8, delay: stagger(0.2), easing: spring({ stiffness: 100, damping: 20 }) }
+        );
+    </script>
+}
