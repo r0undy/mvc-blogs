@@ -7,10 +7,5 @@
     <RootNamespace>mvc_blogs</RootNamespace>
   </PropertyGroup>
 
-    <ItemGroup>
-      <Content Include="Data\posts.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-    </ItemGroup>
 
 </Project>

@@ -37,7 +37,7 @@ public class BlogController : Controller
     {
         try
         {
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "posts.json");
+            var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "posts.json");
             if (!System.IO.File.Exists(filePath))
                 return new List<Post>();
             var json = System.IO.File.ReadAllText(filePath);
