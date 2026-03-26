@@ -193,5 +193,21 @@
         "ThumbnailImage": "/images/thumbnails/chopper.webp",
         "AuthorImage": "/images/authors/rhandie.jpg",
         "IsFeatured": false
+    },
+
+     {
+        
+        "Id": 17,
+        "Title": "Capstone Offended",
+        "Excerpt": "We got grilled, questioned, and emotionally evaluated… and still passed.",
+        "Content": "Our capstone defense started like any other—confident smiles, rehearsed lines, and the dangerous belief that we were fully prepared. Five minutes in, that belief was gone.\n\nThe panel wasted no time. One asked, “Why this algorithm?” Another followed up with, “Why not a better one?”—which felt less like a question and more like a lifestyle critique. Our demand-aware pricing suddenly became demand-aware survival as we scrambled to explain rainfall variables like our grades depended on it (because they did).\n\nThere was a brief moment where the system froze during the demo. Time stopped. Our souls left our bodies. But somehow, with the power of quick thinking and aggressive refreshing, it came back to life—just like our hopes.\n\nThen something unexpected happened: the panel started nodding. Not judging—nodding. Our explanations got sharper, our confidence came back, and suddenly the questions felt less like attacks and more like… actual discussions?\n\nBy the end, what felt like an interrogation turned into recognition. We didn’t just survive the defense, we proved that our system worked, that our ideas made sense, and that we actually knew what we were talking about.\n\nWe walked in thinking we might offend the panel. Turns out, the only thing offended was our fear of failure—because we passed. Successfully. With dignity (mostly intact).",
+        "Author": "Donna Reymatias",
+        "Theme": "Success",
+        "PublishDate": "2026-03-20T14:30:00Z",
+        "HeroImage": "/images/heroes/capstone.jpg",
+        "ThumbnailImage": "/images/thumbnails/capstone.jpg",
+        "AuthorImage": "/images/authors/donna.jpg",
+        "IsFeatured": true
+      
     }
 ]
