@@ -1,52 +1,62 @@
 using Microsoft.AspNetCore.Mvc;
 using mvc_blogs.Models;
+using mvc_blogs.Services;
 
 namespace mvc_blogs.Controllers;
 
-public class BlogController : Controller
+public class BlogController(IBlogService blogService, ILogger<BlogController> logger) : Controller
 {
-
-    public IActionResult Index()
+    // GET /Blog
+    public async Task<IActionResult> Index()
     {
-        var posts = LoadPostsFromJson();
-        if (posts == null)
-        {
-            return Problem("Could not load posts from Data/posts.json. Please check the file format.");
-        }
+        var posts = await blogService.GetAllPostsAsync();
         return View(posts);
     }
 
-
-    public IActionResult Details(int id)
+    // GET /Blog/Details/5
+    public async Task<IActionResult> Details(int id)
     {
-        var posts = LoadPostsFromJson();
-        if (posts == null)
-        {
-            return Problem("Could not load posts from Data/posts.json. Please check the file format.");
-        }
-        Post? post = posts.FirstOrDefault(p => p.Id == id);
+        var post = await blogService.GetPostByIdAsync(id);
         if (post is null)
         {
+            logger.LogWarning("Post {Id} not found", id);
             return NotFound();
         }
+
+        ViewData["Comments"] = await blogService.GetCommentsByPostAsync(id);
         return View(post);
     }
 
-
-    private static List<Post>? LoadPostsFromJson()
+    // GET /Blog/Search?q=docker
+    public async Task<IActionResult> Search(string q)
     {
-        try
+        if (string.IsNullOrWhiteSpace(q))
+            return RedirectToAction(nameof(Index));
+
+        var results = await blogService.SearchPostsAsync(q);
+        ViewData["Query"] = q;
+        return View(results);
+    }
+
+    // GET /Blog/Featured
+    public async Task<IActionResult> Featured()
+    {
+        var posts = await blogService.GetFeaturedPostsAsync();
+        return View(posts);
+    }
+
+    // POST /Blog/Comment
+    [HttpPost, ValidateAntiForgeryToken]
+    public async Task<IActionResult> Comment(Comment comment)
+    {
+        if (!ModelState.IsValid)
         {
-            var filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Data", "posts.json");
-            if (!System.IO.File.Exists(filePath))
-                return new List<Post>();
-            var json = System.IO.File.ReadAllText(filePath);
-            var posts = System.Text.Json.JsonSerializer.Deserialize<List<Post>>(json, new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            return posts;
+            TempData["CommentError"] = "Please fill in all required fields correctly.";
+            return RedirectToAction(nameof(Details), new { id = comment.PostId });
         }
-        catch
-        {
-            return null;
-        }
+
+        await blogService.AddCommentAsync(comment);
+        TempData["CommentSuccess"] = "Your comment has been submitted for moderation.";
+        return RedirectToAction(nameof(Details), new { id = comment.PostId });
     }
 }
