@@ -193,5 +193,30 @@
         "ThumbnailImage": "/images/thumbnails/chopper.webp",
         "AuthorImage": "/images/authors/rhandie.jpg",
         "IsFeatured": false
+    },
+    {
+       "Id": 16,
+        "Title": "Episode 37：Himmel’s Memoirs",
+        "Excerpt": "Frieren: Beyond Journey's End - Episode 37 (S2E09) [English Sub]",
+        "Content": "From the village of a man who refuses to abandon his home even when threatened by a flock of dragons to the port town on the massive Lake Korridor, Frieren’s party visit a variety of places on their travels. When they attempt to take a ferry across Lake Korridor but cannot afford the fare, the captain proposes a trade: that they find Himmel’s memoirs hidden in the monastery on the island.",
+        "Author": "Kerby Correa",
+        "Theme": "Anime",
+        "PublishDate": "2026-03-26T10:23:00Z",
+        "HeroImage": "/images/heroes/frieren.jfif",
+        "ThumbnailImage": "/images/thumbnails/frieren.jfif",
+        "AuthorImage": "/images/authors/kerby.jpg",
+        "IsFeatured": false
+    },
+    {
+        "Id": 18,
+        "Title": "Gossip Girl",
+        "Excerpt": "You know you love me, XOXO",
+        "Content": "Whoever said money doesn't buy happiness didn't know where to shop",
+        "Author": "Dan Humphrey",
+        "Theme": "Chic",
+        "PublishDate": "2026-03-15T10:00:00Z",
+        "HeroImage": "/images/heroes/waldorf.png",
+        "ThumbnailImage": "/images/thumbnails/blair.png",
+        "AuthorImage": "/images/authors/akisha.jpg",
     }
 ]
