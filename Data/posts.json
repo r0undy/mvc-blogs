@@ -193,5 +193,18 @@
         "ThumbnailImage": "/images/thumbnails/chopper.webp",
         "AuthorImage": "/images/authors/rhandie.jpg",
         "IsFeatured": false
+    },
+    {
+        "Id": 18,
+        "Title": "Gossip Girl",
+        "Excerpt": "You know you love me, XOXO",
+        "Content": "Whoever said money doesn't buy happiness didn't know where to shop",
+        "Author": "Dan Humphrey",
+        "Theme": "Chic",
+        "PublishDate": "2026-03-15T10:00:00Z",
+        "HeroImage": "/images/heroes/waldorf.png",
+        "ThumbnailImage": "/images/thumbnails/blair.png",
+        "AuthorImage": "/images/authors/akisha.jpg",
+        "IsFeatured": false
     }
 ]
